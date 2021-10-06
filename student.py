@@ -34,7 +34,6 @@ class Student:
 		self.var_name = StringVar()
 		self.var_email = StringVar()
 		self.var_radio1 = StringVar()
-		self.var_radio2 = StringVar()
 
 	def addframe2(self):
 		#-----Left-----
@@ -158,10 +157,10 @@ class Student:
 		self.teacher_id_entry.grid(row = 4, column = 3, padx = 10, pady = 5, sticky = 'W')
 
 		#-----Radio Buttons-----
-		self.radiobutton1 = ttk.Radiobutton(self.class_info, variable = self.var_radio1, text = "Take photo sample", value = 'yes')
+		self.radiobutton1 = ttk.Radiobutton(self.class_info, variable = self.var_radio1, text = "Take photo sample", value = 'Yes')
 		self.radiobutton1.grid(row = 6, column = 0)
 
-		self.radiobutton2 = ttk.Radiobutton(self.class_info, variable = self.var_radio2, text = "No photo sample", value = 'no')
+		self.radiobutton2 = ttk.Radiobutton(self.class_info, variable = self.var_radio1, text = "No photo sample", value = 'No')
 		self.radiobutton2.grid(row = 6, column = 1)
 
 		#-----bbuttons-----
@@ -288,10 +287,11 @@ class Student:
 																													self.var_dob.get(),
 																													self.var_address.get(),
 																													self.var_teacher.get(),
-																													self.var_photo.get()
+																													self.var_radio1.get()
 																													))
 				conn.commit()
 				self.fetch_data()
+				self.reset_data()
 				conn.close()
 				messagebox.showinfo("Success!","Student details has been added successfully", parent = self.win)
 			except Exception as es:
@@ -354,7 +354,7 @@ class Student:
 																																																																				self.var_dob.get(),
 																																																																				self.var_address.get(),
 																																																																				self.var_teacher.get(),
-																																																																				self.var_photo.get(),
+																																																																				self.var_radio1.get(),
 																																																																				self.var_id.get()
 																																																																				))
 				else:
@@ -363,6 +363,7 @@ class Student:
 				messagebox.showinfo("Success","Details updated successfully", parent = self.win)
 				conn.commit()
 				self.fetch_data()
+				self.reset_data()
 				conn.close()
 			except Exception as es:
 				messagebox.showerror("Error",f"Due to: {str(es)}", parent = self.win)
@@ -383,6 +384,7 @@ class Student:
 						return
 				conn.commit()
 				self.fetch_data()
+				self.reset_data()
 				conn.close()
 				messagebox.showinfo("Deleted!", "Student Details removed", parent = self.win)
 			except Exception as es:
@@ -404,7 +406,6 @@ class Student:
 		self.var_address.set(""),
 		self.var_teacher.set(""),
 		self.var_radio1.set(""),
-		self.var_radio2.set(""),
 
 	def generate_data_set(self):
 		if self.var_dep.get() == "Select" or self.var_year.get() == "Select" or self.var_semester.get() == "Select" or self.var_course.get() == "Select" or self.var_id.get() == "" or self.var_name.get() == "" or self.var_email.get() == "" or self.var_phone.get() == "" or self.var_teacher.get() == "" or self.var_address.get() == "" or self.var_dob.get() == "" or self.var_gender.get() == "" or self.var_division.get() == "" or self.var_roll.get() == "":
@@ -415,9 +416,9 @@ class Student:
 				mycursor = conn.cursor()
 				mycursor.execute("SELECT * FROM student_data")
 				result = mycursor.fetchall()
-				id = 0
-				for x in result:
-					id += 1
+				#id_a = 0
+				#for x in result:
+				#	id_a += 1
 				mycursor.execute("UPDATE student_data SET department = %s, course = %s, curr_year = %s, semester = %s, student_name = %s, email = %s, phone = %s, division = %s, roll_no = %s, gender = %s, dob = %s, address = %s, teacher = %s, photo = %s WHERE id = %s",(
 																																																																				self.var_dep.get(),
 																																																																				self.var_course.get(),
@@ -432,9 +433,10 @@ class Student:
 																																																																				self.var_dob.get(),
 																																																																				self.var_address.get(),
 																																																																				self.var_teacher.get(),
-																																																																				self.var_photo.get(),
-																																																																				self.var_id.get() == id + 1
+																																																																				self.var_radio1.get(),
+																																																																				self.var_id.get() 
 																																																																				))
+				id_a = self.var_id.get()
 				conn.commit()
 				self.fetch_data()
 				self.reset_data()
@@ -456,11 +458,11 @@ class Student:
 					if face_crop(my_frame) is not None:
 						img_id += 1
 						face = cv2.resize(face_crop(my_frame), (450, 450))
-						face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-						file_name_path = "data/user." + str(id) + "." + str(img_id) + ".jpg"
-						cv2.imwrite(file_name_path, face)
+						face1 = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+						file_name_path = "data/user." + str(id_a) + "." + str(img_id) + ".jpg"
+						cv2.imwrite(file_name_path, face1)
 						cv2.putText(face, str(img_id), (50, 50), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 255, 0), 2)
-						cv2.imshow("Cropped Face", face)
+						cv2.imshow("Cropped Face", face1)
 
 					if cv2.waitKey(1) == 13 or int(img_id) == 100:
 						break
