@@ -77,3 +77,5 @@ class dashboard:
 		self.new_window = Toplevel(self.win)
 		self.app = Train(self.new_window)
 		self.app.add_frame3()
+		
+		
