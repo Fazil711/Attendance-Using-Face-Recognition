@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 import mysql.connector
+import cv2
 
 class Student:
 	def __init__(self, win):
@@ -179,7 +180,7 @@ class Student:
 		self.reset_button = Button(self.bbuttons, width = 17, text = "Reset", font = ("times now roman", 12, "bold"), fg = "white", bg = "blue", command = self.reset_data)
 		self.reset_button.grid(row = 0, column = 3)
 
-		self.take_photo_button = Button(self.bbuttons, width = 35, text = "Take Photo", font = ("times now roman", 12, "bold"), fg = "white", bg = "blue")
+		self.take_photo_button = Button(self.bbuttons, width = 35, text = "Take Photo", font = ("times now roman", 12, "bold"), fg = "white", bg = "blue", command = self.generate_data_set)
 		self.take_photo_button.grid(row = 1, column = 0, columnspan = 2)
 
 		self.update_photo_button = Button(self.bbuttons, width = 35, text = "Update Photo", font = ("times now roman", 12, "bold"), fg = "white", bg = "blue")
@@ -404,3 +405,69 @@ class Student:
 		self.var_teacher.set(""),
 		self.var_radio1.set(""),
 		self.var_radio2.set(""),
+
+	def generate_data_set(self):
+		if self.var_dep.get() == "Select" or self.var_year.get() == "Select" or self.var_semester.get() == "Select" or self.var_course.get() == "Select" or self.var_id.get() == "" or self.var_name.get() == "" or self.var_email.get() == "" or self.var_phone.get() == "" or self.var_teacher.get() == "" or self.var_address.get() == "" or self.var_dob.get() == "" or self.var_gender.get() == "" or self.var_division.get() == "" or self.var_roll.get() == "":
+			messagebox.showerror("Error!","All fields are requires.", parent = self.win)
+		else:
+			try:
+				conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+				mycursor = conn.cursor()
+				mycursor.execute("SELECT * FROM student_data")
+				result = mycursor.fetchall()
+				id = 0
+				for x in result:
+					id += 1
+				mycursor.execute("UPDATE student_data SET department = %s, course = %s, curr_year = %s, semester = %s, student_name = %s, email = %s, phone = %s, division = %s, roll_no = %s, gender = %s, dob = %s, address = %s, teacher = %s, photo = %s WHERE id = %s",(
+																																																																				self.var_dep.get(),
+																																																																				self.var_course.get(),
+																																																																				self.var_year.get(),
+																																																																				self.var_semester.get(),																																																																		
+																																																																				self.var_name.get(),
+																																																																				self.var_email.get(),
+																																																																				self.var_phone.get(),
+																																																																				self.var_division.get(),
+																																																																				self.var_roll.get(),
+																																																																				self.var_gender.get(),
+																																																																				self.var_dob.get(),
+																																																																				self.var_address.get(),
+																																																																				self.var_teacher.get(),
+																																																																				self.var_photo.get(),
+																																																																				self.var_id.get() == id + 1
+																																																																				))
+				conn.commit()
+				self.fetch_data()
+				self.reset_data()
+				conn.close()
+
+				faceclassifier = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+				def face_crop(img):
+					gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+					faces = faceclassifier.detectMultiScale(gray, 1.3, 5)
+
+					for (x, y, w, h) in faces:
+						face_cropped = img[y:y + h, x:x + w]
+						return face_cropped
+
+				cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+				img_id = 0
+				while True:
+					ret, my_frame = cap.read()
+					if face_crop(my_frame) is not None:
+						img_id += 1
+						face = cv2.resize(face_crop(my_frame), (450, 450))
+						face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+						file_name_path = "data/user." + str(id) + "." + str(img_id) + ".jpg"
+						cv2.imwrite(file_name_path, face)
+						cv2.putText(face, str(img_id), (50, 50), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 255, 0), 2)
+						cv2.imshow("Cropped Face", face)
+
+					if cv2.waitKey(1) == 13 or int(img_id) == 100:
+						break
+				cap.release()
+				cv2.destroyAllWindows()
+				messagebox.showinfo("Result", "Generating datasets completed!", parent = self.win)
+			except Exception as es:
+				messagebox.showerror("Error",f"Due to: {str(es)}", parent = self.win)
+				
+				
