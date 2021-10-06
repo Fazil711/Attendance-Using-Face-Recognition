@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import ttk
 from PIL import ImageTk, Image
 from student import Student
+import os
+from train import Train
 
 class dashboard:
 	def __init__(self):
@@ -22,12 +24,17 @@ class dashboard:
 		#-----Menu------
 		self.menu = Menu(self.win)
 		self.win.config(menu = self.menu)
-		self.students = Menu(self.menu, tearoff = 0)
-		self.menu.add_cascade(label = 'Students', menu = self.students)
+
+		self.students = Menu(self.menu, tearoff = 0,)
+		self.students.add_command(label = 'Student Photo', command = self.student_photos)
+		self.menu.add_cascade(label = 'Photos', menu = self.students)
+		
 		self.calender = Menu(self.menu, tearoff = 0)
 		self.menu.add_cascade(label = 'Calender', menu = self.calender)
 		self.database = Menu(self.menu, tearoff = 0)
+		self.database.add_command(label = 'Train', command = self.train_set)
 		self.menu.add_cascade(label = 'Database', menu = self.database)
+		
 		self.attendence = Menu(self.menu, tearoff = 0)
 		self.menu.add_cascade(label = 'Attendence', menu = self.attendence)
 		#-----****------
@@ -58,7 +65,15 @@ class dashboard:
 		self.button4a = Button(self.frame, text = "Developer", font = ("times new roman", 12, "bold"), fg = "black", bg = "#f9ffcc", relief = "flat", width = 11).place(x = 800, y = 220)
 		self.win.mainloop()
 
+	def student_photos(self):
+		os.startfile('data')
+
 	def student_details(self):
 		self.new_window = Toplevel(self.win)
 		self.app = Student(self.new_window)
 		self.app.addframe2()
+
+	def train_set(self):
+		self.new_window = Toplevel(self.win)
+		self.app = Train(self.new_window)
+		self.app.add_frame3()
