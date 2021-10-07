@@ -4,6 +4,7 @@ from PIL import ImageTk, Image
 from student import Student
 import os
 from train import Train
+from teacher_data import Teacher_data
 
 class dashboard:
 	def __init__(self):
@@ -36,7 +37,8 @@ class dashboard:
 		self.menu.add_cascade(label = 'Database', menu = self.database)
 		
 		self.attendence = Menu(self.menu, tearoff = 0)
-		self.menu.add_cascade(label = 'Attendence', menu = self.attendence)
+		self.attendence.add_command(label = 'Details', command = self.teacher_set)
+		self.menu.add_cascade(label = 'Teacher', menu = self.attendence)
 		#-----****------
 		self.label21 = Label(self.frame, text = "Welcome to the Dashboard", font = ("times new roman", 20, "bold"), fg = "black", bg = "#f9ffcc").place(x = 20, y = 20)
 		#-----Button 1-----
@@ -77,5 +79,9 @@ class dashboard:
 		self.new_window = Toplevel(self.win)
 		self.app = Train(self.new_window)
 		self.app.add_frame3()
-		
+
+	def teacher_set(self):
+		self.new_window = Toplevel(self.win)
+		self.app = Teacher_data(self.new_window)
+		self.app.add_frame4()
 		
