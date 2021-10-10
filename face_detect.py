@@ -2,15 +2,17 @@ from tkinter import *
 from tkinter import ttk
 from PIL import ImageTk, Image
 from student import Student
+from time import strftime
 import os
 import mysql.connector
 import cv2
+from datetime import datetime
 import numpy as np
 from tkinter import messagebox
 
 class Face_Detect:
-	def __init__(self):
-		self.win = Tk()
+	def __init__(self, root):
+		self.win = root
 		self.canvas = Canvas(self.win, width=1000, height=600, bg='#aa0ff7')
 		self.canvas.pack(expand=YES, fill=BOTH)
 		width = self.win.winfo_screenwidth()
@@ -31,6 +33,19 @@ class Face_Detect:
 		self.button = Button(self.frame, text = "Detect Now", font = ("times now roman", 20, "bold"), bg = '#ff0866', width = 20, command = self.face_rec)
 		self.button.place(x = 10, y = 60)
 		self.win.mainloop()
+
+	def mark_attendance(self, i, r, n, d):
+		with open('fazil.csv', "r+", newline = '\n') as f:
+			mydatalist = f.readlines()
+			name_list = []
+			for line in mydatalist:
+				entry = line.split(",")
+				name_list.append(entry[0])
+			if( (i not in name_list) and (r not in name_list) and (n not in name_list) and (d not in name_list)):
+				now = datetime.now()
+				d1 = strftime("%d/%m/%Y")
+				dtstring = now.strftime('%H:%M:%S')
+				f.writelines(f"\n{i}, {r}, {n}, {d}, {dtstring}, {d1} is present ")
 
 	def face_rec(self):
 
@@ -55,17 +70,22 @@ class Face_Detect:
 
 				mycursor.execute("SELECT roll_no from student_data WHERE id="+str(id_a))
 				r = mycursor.fetchone()
-				r = str(r)
-				r = "".join(r)
+				r = "+".join(r)
 
 				mycursor.execute("SELECT department from student_data WHERE id="+str(id_a))
 				d = mycursor.fetchone()
 				d = "+".join(d)
 
+				mycursor.execute("SELECT id from student_data WHERE id="+str(id_a))
+				i = mycursor.fetchone()
+				i = "+".join(i)
+
 				if confidence > 77:
+					cv2.putText(img, f"ID: {i}", (x, y - 75), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255, 255, 255), 3)
 					cv2.putText(img, f"Roll No: {r}", (x, y - 55), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255, 255, 255), 3)
 					cv2.putText(img, f"Name: {n}", (x, y - 30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255, 255, 255), 3)
 					cv2.putText(img, f"Department: {d}", (x, y - 5), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255, 255, 255), 3)
+					self.mark_attendance(i, r, n, d)
 				else:
 					cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 3)
 					cv2.putText(img,"Unknown Face", (x, y - 5), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255, 255, 255), 3)
