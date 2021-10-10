@@ -5,6 +5,7 @@ from student import Student
 import os
 from train import Train
 from teacher_data import Teacher_data
+from face_detect import Face_Detect
 
 class dashboard:
 	def __init__(self):
@@ -50,9 +51,9 @@ class dashboard:
 		#-----Button 2-----
 		self.img1 = Image.open('photos/face_img.png').resize((100, 100), Image.ANTIALIAS)
 		self.ph1 = ImageTk.PhotoImage(self.img1)
-		self.button2 = Button(self.frame, image = self.ph1, bg = '#f9ffcc', relief = 'flat')
+		self.button2 = Button(self.frame, image = self.ph1, bg = '#f9ffcc', relief = 'flat', command = self.face_detection)
 		self.button2.place(x = 320, y = 120)
-		self.button2a = Button(self.frame, text = "Face attendence", font = ("times new roman", 11, "bold"), fg = "black", bg = "#f9ffcc", relief = "flat", width = 11).place(x = 320, y = 220)
+		self.button2a = Button(self.frame, text = "Face Detect", font = ("times new roman", 11, "bold"), fg = "black", bg = "#f9ffcc", relief = "flat", width = 11).place(x = 320, y = 220)
 		#-----Button 3-----
 		self.img2 = Image.open('photos/attendance_img.png').resize((100, 100), Image.ANTIALIAS)
 		self.ph2 = ImageTk.PhotoImage(self.img2)
@@ -84,4 +85,8 @@ class dashboard:
 		self.new_window = Toplevel(self.win)
 		self.app = Teacher_data(self.new_window)
 		self.app.add_frame4()
-		
+
+	def face_detection(self):
+		self.new_window = Toplevel(self.win)
+		self.app = Face_Detect(self.new_window)
+		self.app.add_frame5()
