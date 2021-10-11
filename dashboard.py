@@ -7,6 +7,7 @@ from train import Train
 from teacher_data import Teacher_data
 from face_detect import Face_Detect
 from attendance import Attendance_data
+from Developer import Developer_data
 
 class dashboard:
 	def __init__(self):
@@ -70,7 +71,7 @@ class dashboard:
 
 		self.img4 = Image.open('photos/developer_img.jpg').resize((100, 100), Image.ANTIALIAS)
 		self.ph4 = ImageTk.PhotoImage(self.img4)
-		self.button5 = Button(self.frame, image = self.ph4, bg = '#f9ffcc', relief = 'flat')
+		self.button5 = Button(self.frame, image = self.ph4, bg = '#f9ffcc', relief = 'flat', command = self.developer_details)
 		self.button5.place(x = 450, y = 300)
 		self.button5a = Button(self.frame, text = "Developer", font = ("times new roman", 12, "bold"), fg = "black", bg = "#f9ffcc", relief = "flat", width = 11).place(x = 450, y = 400)
 		self.win.mainloop()
@@ -103,3 +104,7 @@ class dashboard:
 		self.app = Attendance_data(self.new_window)
 		self.app.add_frame6()
 
+	def developer_details(self):
+		self.new_window = Toplevel(self.win)
+		self.app = Developer_data(self.new_window)
+		self.app.add_frame7()
