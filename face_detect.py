@@ -45,7 +45,7 @@ class Face_Detect:
 				now = datetime.now()
 				d1 = strftime("%d/%m/%Y")
 				dtstring = now.strftime('%H:%M:%S')
-				f.writelines(f"\n{i}, {r}, {n}, {d}, {dtstring}, {d1} is present ")
+				f.writelines(f"\n{i}, {r}, {n}, {d}, {dtstring}, {d1}, Present")
 
 	def face_rec(self):
 
