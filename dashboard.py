@@ -6,6 +6,7 @@ import os
 from train import Train
 from teacher_data import Teacher_data
 from face_detect import Face_Detect
+from attendance import Attendance_data
 
 class dashboard:
 	def __init__(self):
@@ -90,3 +91,8 @@ class dashboard:
 		self.new_window = Toplevel(self.win)
 		self.app = Face_Detect(self.new_window)
 		self.app.add_frame5()
+		
+	def attendence_func(self):
+		self.new_window = Toplevel(self.win)
+		self.app = Attendance_data(self.new_window)
+		self.app.add_frame6()
