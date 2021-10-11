@@ -39,8 +39,8 @@ class dashboard:
 		self.menu.add_cascade(label = 'Database', menu = self.database)
 		
 		self.attendence = Menu(self.menu, tearoff = 0)
-		self.attendence.add_command(label = 'Details', command = self.teacher_set)
-		self.menu.add_cascade(label = 'Teacher', menu = self.attendence)
+		#self.attendence.add_command(label = 'Help')
+		self.menu.add_cascade(label = 'Help', menu = self.attendence)
 		#-----****------
 		self.label21 = Label(self.frame, text = "Welcome to the Dashboard", font = ("times new roman", 20, "bold"), fg = "black", bg = "#f9ffcc").place(x = 20, y = 20)
 		#-----Button 1-----
@@ -58,15 +58,21 @@ class dashboard:
 		#-----Button 3-----
 		self.img2 = Image.open('photos/attendance_img.png').resize((100, 100), Image.ANTIALIAS)
 		self.ph2 = ImageTk.PhotoImage(self.img2)
-		self.button3 = Button(self.frame, image = self.ph2, bg = '#f9ffcc', relief = 'flat')
+		self.button3 = Button(self.frame, image = self.ph2, bg = '#f9ffcc', relief = 'flat', command = self.attendence_func)
 		self.button3.place(x = 560, y = 120)
 		self.button3a = Button(self.frame, text = "Attendence", font = ("times new roman", 12, "bold"), fg = "black", bg = "#f9ffcc", relief = "flat", width = 11).place(x = 560, y = 220)
 		#-----Button 4-----
-		self.img3 = Image.open('photos/developer_img.jpg').resize((100, 100), Image.ANTIALIAS)
+		self.img3 = Image.open('photos/teacher_img.png').resize((100, 100), Image.ANTIALIAS)
 		self.ph3 = ImageTk.PhotoImage(self.img3)
-		self.button4 = Button(self.frame, image = self.ph3, bg = '#f9ffcc', relief = 'flat')
+		self.button4 = Button(self.frame, image = self.ph3, bg = '#f9ffcc', relief = 'flat', command = self.teacher_set)
 		self.button4.place(x = 800, y = 120)
-		self.button4a = Button(self.frame, text = "Developer", font = ("times new roman", 12, "bold"), fg = "black", bg = "#f9ffcc", relief = "flat", width = 11).place(x = 800, y = 220)
+		self.button4a = Button(self.frame, text = "Teacher", font = ("times new roman", 12, "bold"), fg = "black", bg = "#f9ffcc", relief = "flat", width = 11).place(x = 800, y = 220)
+
+		self.img4 = Image.open('photos/developer_img.jpg').resize((100, 100), Image.ANTIALIAS)
+		self.ph4 = ImageTk.PhotoImage(self.img4)
+		self.button5 = Button(self.frame, image = self.ph4, bg = '#f9ffcc', relief = 'flat')
+		self.button5.place(x = 450, y = 300)
+		self.button5a = Button(self.frame, text = "Developer", font = ("times new roman", 12, "bold"), fg = "black", bg = "#f9ffcc", relief = "flat", width = 11).place(x = 450, y = 400)
 		self.win.mainloop()
 
 	def student_photos(self):
@@ -91,8 +97,9 @@ class dashboard:
 		self.new_window = Toplevel(self.win)
 		self.app = Face_Detect(self.new_window)
 		self.app.add_frame5()
-		
+
 	def attendence_func(self):
 		self.new_window = Toplevel(self.win)
 		self.app = Attendance_data(self.new_window)
 		self.app.add_frame6()
+
