@@ -172,7 +172,7 @@ class Teacher_data:
 			messagebox.showerror("Error!","All fields are requires", parent = self.win)
 		else:
 			try:
-				conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+				conn = mysql.connector.connect(host = 'localhost', user = 'name', passwd = 'password', database ='testregister')
 				mycursor = conn.cursor()
 				mycursor.execute('INSERT INTO registeration VALUES(%s,%s,%s,%s,%s,%s,%s,%s)',(
 																								self.var_name.get(),
@@ -199,7 +199,7 @@ class Teacher_data:
 			try:
 				update_prompt = messagebox.askyesno("Update?", "Do you want to update this teacher's details", parent = self.win)
 				if update_prompt > 0:
-					conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+					conn = mysql.connector.connect(host = 'localhost', user = 'name', passwd = 'password', database ='testregister')
 					mycursor = conn.cursor()
 					mycursor.execute('UPDATE registeration SET user_name = %s, email_id = %s, age = %s, phone_no = %s, address = %s, country = %s, passwd = %s WHERE roll_no = %s',(
 																																												self.var_name.get(),
@@ -224,7 +224,7 @@ class Teacher_data:
 
 
 	def fetch_data1(self):
-		conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+		conn = mysql.connector.connect(host = 'localhost', user = 'name', passwd = 'password', database ='testregister')
 		mycursor = conn.cursor()
 		mycursor.execute("SELECT * FROM registeration")
 		data = mycursor.fetchall()
@@ -257,7 +257,7 @@ class Teacher_data:
 			try:
 				delete = messagebox.askyesno("Delete!", "Do you want to delete the details?", parent = self.win)
 				if delete > 0:
-					conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+					conn = mysql.connector.connect(host = 'localhost', user = 'name', passwd = 'password', database ='testregister')
 					mycursor = conn.cursor()
 					#mycursor.execute("SET SQL_SAFE_UPDATES = 0;")
 					mycursor.execute("DELETE FROM registeration WHERE roll_no = %s ",(self.var_id.get(),))
