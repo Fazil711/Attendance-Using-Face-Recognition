@@ -270,7 +270,7 @@ class Student:
 			messagebox.showerror("Error!","All fields are requires A", parent = self.win)
 		else:
 			try:
-				conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+				conn = mysql.connector.connect(host = 'localhost', user = 'yourusername', passwd = 'yourpassword', database ='testregister')
 				mycursor = conn.cursor()
 				mycursor.execute('INSERT INTO student_data VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',(
 																													self.var_dep.get(),
@@ -298,7 +298,7 @@ class Student:
 				messagebox.showerror("Error!",f"Due to :{str(es)}", parent = self.win)
 
 	def fetch_data(self):
-		conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+		conn = mysql.connector.connect(host = 'localhost', user = 'name', passwd = 'password', database ='testregister')
 		mycursor = conn.cursor()
 		mycursor.execute("SELECT * FROM student_data")
 		data = mycursor.fetchall()
@@ -338,7 +338,7 @@ class Student:
 			try:
 				update_prompt = messagebox.askyesno("Update?", "Do you want to update this student's details", parent = self.win)
 				if update_prompt > 0:
-					conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+					conn = mysql.connector.connect(host = 'localhost', user = 'name', passwd = 'password', database ='testregister')
 					mycursor = conn.cursor()
 					mycursor.execute("UPDATE student_data SET department = %s, course = %s, curr_year = %s, semester = %s, student_name = %s, email = %s, phone = %s, division = %s, roll_no = %s, gender = %s, dob = %s, address = %s, teacher = %s, photo = %s WHERE id = %s",(
 																																																																				self.var_dep.get(),
@@ -375,7 +375,7 @@ class Student:
 			try:
 				delete = messagebox.askyesno("Delete!", "Do you want to delete the details?", parent = self.win)
 				if delete > 0:
-					conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+					conn = mysql.connector.connect(host = 'localhost', user = 'name', passwd = 'password', database ='testregister')
 					mycursor = conn.cursor()
 					#mycursor.execute("SET SQL_SAFE_UPDATES = 0;")
 					mycursor.execute("DELETE FROM student_data WHERE id = %s ",(self.var_id.get(),))
@@ -412,7 +412,7 @@ class Student:
 			messagebox.showerror("Error!","All fields are requires.", parent = self.win)
 		else:
 			try:
-				conn = mysql.connector.connect(host = 'localhost', user = 'root', passwd = 'fazil@@621311', database ='testregister')
+				conn = mysql.connector.connect(host = 'localhost', user = 'name', passwd = 'password', database ='testregister')
 				mycursor = conn.cursor()
 				mycursor.execute("SELECT * FROM student_data")
 				result = mycursor.fetchall()
